@@ -2,6 +2,10 @@ import React, {useState, useEffect} from 'react';
 import {Text, useInput, useStdout} from 'ink';
 import Color from 'ink-color-pipe';
 
+// Regex to detech color escape patterns, from
+// https://stackoverflow.com/a/18000433/1087119
+const removeColorRegEx = /\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]/g;
+
 export default function App({lines, color}) {
 	const [line, setLine] = useState(0);
 	const [x, setX] = useState(0); // column offset
@@ -10,7 +14,8 @@ export default function App({lines, color}) {
 
   useInput((input, key) => {
     if (key.return) {
-      const filtered = lines.filter((l, i) => selected[i]);
+      const filtered = lines.filter((l, i) => selected[i])
+        .map(l => l.replace(removeColorRegEx, ''));
       process.stdout.write(filtered.join('\n'));
       process.stdout.end('\n');
       process.exit();
