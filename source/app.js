@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Text, useInput} from 'ink';
+import {Text, useInput, useStdout} from 'ink';
 import Color from 'ink-color-pipe';
 
-export default function App({lines}) {
+export default function App({lines, color}) {
 	const [line, setLine] = useState(0);
 	const [x, setX] = useState(0); // column offset
 	const [selected, setSelected] = useState({});
+	const {stdout} = useStdout();
 
   useInput((input, key) => {
     if (key.return) {
@@ -32,23 +33,15 @@ export default function App({lines}) {
 		}
 	});
 
-  // return lines.map((l, i) => {
-  //   const row = i;
-  //   return <Text key={i} wrap="truncate">
-  //     {line == row ? <Color styles='green'>⮞</Color>: ' '
-  //     } <Color styles={selected[row] ? 'inverse' : ''}>{l.slice(x)}</Color>
-  //   </Text>;
-  // });
-
-  // when stdout is not a terminal, we won't know rows
-  const visibleRows = (process.stdin.rows || 20) - 1;
+  const visibleRows = (stdout.rows || 20) - 1;
   const offset = Math.max(0, line - visibleRows + 1);
 
   return lines.slice(offset, offset + visibleRows).map((l, i) => {
     const row = i + offset;
     return <Text key={i} wrap="truncate">
-      {line == row ? <Color styles='green'>⮞</Color>: ' '
-      } <Color styles={selected[row] ? 'inverse' : ''}>{l.slice(x)}</Color>
+      {selected[row] ? '+' : ' '}
+      {line == row ? <Color styles='green'>⮞ </Color>: '  '}
+      <Color styles={selected[row] ? 'inverse' : ''}>{l.slice(x)}</Color>
     </Text>;
   });
 }

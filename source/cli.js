@@ -23,12 +23,10 @@ const cli = meow(
 	},
 );
 
-const mytty = fs.createWriteStream('/dev/tty', { flags: 'w' });
-mytty.columns = process.stdout.columns;
-
 const data = fs.readFileSync(process.stdin.fd, 'utf-8');
-const ttyIn = new tty.ReadStream(fs.openSync('/dev/tty'))
+
+const ttyOut = new tty.WriteStream(fs.openSync('/dev/tty', 'w'));
+const ttyIn = new tty.ReadStream(fs.openSync('/dev/tty'));
 ttyIn.setRawMode(false);
 
-render(<App name={cli.flags.name} lines={data.split('\n')} />,
-  {stdout: mytty, stdin: ttyIn});
+render(<App lines={data.split('\n')} />, {stdout: ttyOut, stdin: ttyIn});
