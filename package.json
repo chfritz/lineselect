@@ -55,5 +55,6 @@
 		"presets": [
 			"@babel/preset-react"
 		]
-	}
+	},
+  "keywords": ["cli"]
 }

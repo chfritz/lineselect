@@ -45,6 +45,4 @@ $ npm install -g lineselect
 
 ## Acknowledgements
 
-Built using the amazing: https://github.com/vadimdemedes/ink.
-
-With help from https://github.com/geier/choose and https://superuser.com/a/742789/282396, with the key insight of writing directly to the TTY (by-passing stdout) to render the TUI without messing up the eventual output to stdout.
+Built using the amazing React-for-CLI [🌈 Ink](https://github.com/vadimdemedes/ink) library . With the key insight of writing directly to the TTY, by-passing stdout, to render the TUI without messing up the eventual output to stdout taken from https://github.com/geier/choose and https://superuser.com/a/742789/282396 🙏.
