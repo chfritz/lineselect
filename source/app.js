@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Text, useInput, useStdout} from 'ink';
 import Color from 'ink-color-pipe';
 
-// Regex to detech color escape patterns, from
+// Regex to detect color escape patterns, from
 // https://stackoverflow.com/a/18000433/1087119
 const removeColorRegEx = /\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]/g;
 
