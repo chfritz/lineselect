@@ -1,6 +1,6 @@
 {
 	"name": "lineselect",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"license": "MIT",
 	"bin": "dist/cli.js",
 	"type": "module",
@@ -56,5 +56,7 @@
 			"@babel/preset-react"
 		]
 	},
-  "keywords": ["cli"]
+	"keywords": [
+		"cli"
+	]
 }
