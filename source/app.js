@@ -44,9 +44,9 @@ export default function App({lines, color}) {
   return lines.slice(offset, offset + visibleRows).map((l, i) => {
     const row = i + offset;
     return <Text key={i} wrap="truncate">
-      {selected[row] ? '+' : ' '}
-      {line == row ? <Color styles='green'>⮞ </Color>: '  '}
-      <Color styles={selected[row] ? 'inverse' : ''}>{l.slice(x)}</Color>
+      {line == row ? <Color styles='green'>→</Color>: ' '} {selected[row]
+        ? '+' : ' '} <Color styles={selected[row] ? 'inverse' : ''}>
+        {l.slice(x)}</Color>
     </Text>;
   });
 }
