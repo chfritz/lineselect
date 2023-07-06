@@ -6,23 +6,16 @@ import fs from 'fs';
 import tty from 'tty';
 
 const usage = () => {
-  console.log(`
-  lineselect is a shell utility to interactively select lines from stdin and output them to stdout.
-  It requires stdin to be a readable pipe.
+  console.log(`lineselect is a shell utility to interactively select lines from stdin and output them to stdout. It requires stdin to be a readable pipe.
 
-  Usage:
-
+Usage:
     some-command | lineselect | some-other-command
-
     or
-
     some-other-command $(some-command | lineselect)
 
-  Example:
-
-    List the 10 largest files, interactively select from them which ones to delete:
-      ls -S *.log | head -n 10 | lineselect | xargs rm
-    `);
+Example:
+    List the 10 largest files, interactively select which ones to delete:
+    ls -S *.log | head -n 10 | lineselect | xargs rm`);
   process.exit(1);
 };
 
