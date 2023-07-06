@@ -2,6 +2,10 @@
 	"name": "lineselect",
 	"version": "0.1.4",
 	"license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "github:chfritz/lineselect"
+  },
 	"bin": "dist/cli.js",
 	"type": "module",
 	"engines": {
