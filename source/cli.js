@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import React from 'react';
-import {render} from 'ink';
+import { render } from 'ink';
 import App from './app.js';
 import fs from 'fs';
 import tty from 'tty';
@@ -33,8 +33,15 @@ try {
   usage();
 }
 
+// Regex to detect color escape patterns.
+// From https://stackoverflow.com/a/18000433/1087119.
+const removeColorRegEx = /\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]/g;
+const lines = data.split('\n')
+    .filter(l => Boolean(l))
+    .map(l => l.replace(removeColorRegEx, ''));
+
 const ttyOut = new tty.WriteStream(fs.openSync('/dev/tty', 'w'));
 const ttyIn = new tty.ReadStream(fs.openSync('/dev/tty'));
 ttyIn.setRawMode(false);
 
-render(<App lines={data.split('\n')} />, {stdout: ttyOut, stdin: ttyIn});
+render(<App lines={lines} />, {stdout: ttyOut, stdin: ttyIn});

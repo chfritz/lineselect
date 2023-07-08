@@ -6,7 +6,7 @@
     "type": "git",
     "url": "github:chfritz/lineselect"
   },
-	"bin": "dist/cli.js",
+	"bin": "cli.sh",
 	"type": "module",
 	"engines": {
 		"node": ">=16"
