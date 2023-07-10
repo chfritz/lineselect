@@ -38,7 +38,10 @@ export default function App({lines, color}) {
   const visibleRows = (stdout.rows || 20) - 1;
   const offset = Math.max(0, line - visibleRows + 1);
 
-  return <><Text>Use ↑↓ keys to move cursor, [space] to toggle line</Text>
+  return <>
+  <Text><Color styles='cyan'>
+      Use ↑↓ keys to move cursor, [space] to toggle line
+    </Color></Text>
   {lines.slice(offset, offset + visibleRows).map((l, i) => {
     const row = i + offset;
     return <Text key={i} wrap="truncate">
