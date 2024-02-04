@@ -12,7 +12,11 @@ export default function App({lines, color}) {
 	const [exit, setExit] = useState(false);
 	const {stdout} = useStdout();
 
+  const visibleRows = (stdout.rows || 20) - 1;
+
   useInput((input, key) => {
+    // keep for debugging:
+    // fs.writeFileSync('/tmp/key', JSON.stringify(key, true, 2));
     if (key.return) {
       const filtered = lines.filter((l, i) => selected[i]);
       setExit(true);
@@ -27,6 +31,12 @@ export default function App({lines, color}) {
 			setLine(l => Math.max(0, l - 1));
 		} else if (key.downArrow) {
 			setLine(l => Math.min(lines.length - 1, l + 1));
+    } else if (key.pageUp) {
+			setLine(l => Math.max(0, l - visibleRows));
+		} else if (key.pageDown) {
+			setLine(l => Math.min(lines.length - 1, l + visibleRows));
+		} else if (key.end) {
+			setLine(l => lines.length - 1);
 		} else if (key.rightArrow) {
 			setX(x => x + 1);
 		} else if (key.leftArrow) {
@@ -41,8 +51,7 @@ export default function App({lines, color}) {
 		}
 	});
 
-  const visibleRows = (stdout.rows || 20) - 1;
-  const offset = Math.max(0, line - visibleRows + 1);
+  const offset = Math.max(0, line - visibleRows + 3);
 
   // clear output before exiting, needed when input exceeds terminal rows
   if (exit) return <Box marginTop={2}><Text><Color styles='green'>
@@ -51,7 +60,7 @@ export default function App({lines, color}) {
 
   return <>
   <Text><Color styles='cyan'>
-      Use ↑↓ keys to move cursor, [space] to toggle line
+      Use ↑↓ keys to move cursor, [space] to toggle line, [enter] to submit, [esc] to abort
     </Color></Text>
   {lines.slice(offset, offset + visibleRows).map((l, i) => {
     const row = i + offset;
