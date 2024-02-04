@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
-import { Text, useInput, useStdout } from 'ink';
+import { Text, Box, useInput, useStdout } from 'ink';
 import Color from 'ink-color-pipe';
+import fs from 'fs';
 
+const OUT_FILE = '/tmp/lineselect';
 
 export default function App({lines, color}) {
 	const [line, setLine] = useState(0);
 	const [x, setX] = useState(0); // column offset
 	const [selected, setSelected] = useState({});
+	const [exit, setExit] = useState(false);
 	const {stdout} = useStdout();
 
   useInput((input, key) => {
     if (key.return) {
       const filtered = lines.filter((l, i) => selected[i]);
-      process.stdout.write(filtered.join('\n'));
+      setExit(true);
+      const output = filtered.join('\n')
+      fs.writeFileSync(OUT_FILE, output);
+      process.stdout.write(output);
       process.stdout.end('\n');
       process.exit();
     } else if (key.escape) {
@@ -37,6 +43,11 @@ export default function App({lines, color}) {
 
   const visibleRows = (stdout.rows || 20) - 1;
   const offset = Math.max(0, line - visibleRows + 1);
+
+  // clear output before exiting, needed when input exceeds terminal rows
+  if (exit) return <Box marginTop={2}><Text><Color styles='green'>
+      Selected lines are also written to {OUT_FILE}
+    </Color></Text></Box>;
 
   return <>
   <Text><Color styles='cyan'>
